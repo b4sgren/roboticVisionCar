@@ -1,0 +1,3 @@
+[submodule "src/kbhackathon"]
+	path = src/kbhackathon
+	url = https://github.com/drinkdhmo/kbhackathon.git
