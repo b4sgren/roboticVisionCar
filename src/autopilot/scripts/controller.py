@@ -139,46 +139,6 @@ class Controller:
 
         self.command_pub.publish(vel)
 
-    def encoder_callback(self, msg):
-    	v = msg.vel
-       # print 'Velocity', v
-    	now = rospy.Time.now()
-    	dt = (now - self.prev_time).to_sec()
-    	self.prev_time = now
-
-    	error = self.v_ref - v
-    	if error > self.e_sat_v:
-    	    error = self.e_sat_v
-    	elif error < - self.e_sat_v:
-    	    error = - self.e_sat_v
-
-    	if v<0.1 and v>-.1:
-    	    self.integrator_v = 0
-
-        self.integrator_v = self.integrator_v + dt / 2.0 * (error - self.prev_error_v)
-        self.prev_error_v = error
-	    #print self.integrator_v
-    	self.v_dot = (2 * self.sigma_v - dt)/(2 * self.sigma_v + dt) * self.v_dot + 2.0 / (2 * self.sigma_v + dt) * (v - self.prev_v)
-    	self.prev_v = v
-
-    	u_unsat = self.Kp_v * error - self.Kd_v * self.v_dot + self.Ki_v * self.integrator_v
-
-    	u = u_unsat
-
-    	if u > self.u_sat_v or u < -self.u_sat_v:
-    	    self.v_command = self.u_sat_v * np.sign(u)
-    	else:
-    	    self.v_command = u
-
-    	#Anti wind up. Apply else where also
-    	if self.Ki_v != 0.0:
-    	    self.integrator_v = self.integrator_v + dt/self.Ki_v * (self.v_command - u)
-
-    	vel = Command()
-    	vel.steer = 0.0
-    	vel.throttle = self.v_command
-    	self.command_pub.publish(vel)
-
 def main():
     """driver to interface to the Teensy on the KB_Car
     Command Line Arguments
