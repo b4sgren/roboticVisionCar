@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mc_estimator</name>
+  <version>0.1.3</version>
+  <description>Driving a vision car in motion capture room</description>
+
+  <maintainer email="jaronce@byu.edu">Jaron Ellingson</maintainer>
+
+  <author>Jaron Ellingson</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>autopilot</build_depend>
+  <depend>eigen</depend>
+
+  <exec_depend>message_runtime</exec_depend>
+
+</package>
