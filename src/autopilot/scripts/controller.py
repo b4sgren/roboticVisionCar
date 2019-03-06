@@ -3,8 +3,8 @@
 import rospy
 from kb_utils.msg import Command
 from kb_utils.msg import Encoder
-from kb_autopilot.msg import Controller_Commands
-from kb_autopilot.msg import State # will we need this one?
+from autopilot.msg import Controller_Commands
+from autopilot.msg import State # will we need this one?
 import numpy as np
 import math
 import time
