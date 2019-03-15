@@ -24,8 +24,8 @@ class Controller:
         self.integrator_v = 0.0
         self.sigma_v = 2.5
         self.prev_v = 0.0
-	    self.e_sat_v = 0.3
-	    self.u_sat_v = 0.3
+	self.e_sat_v = 0.3
+	self.u_sat_v = 0.3
 
         self.prev_time = rospy.Time.now()
         self.v_dot = 0.0
@@ -158,4 +158,4 @@ def main():
     print("Done.")
 
 if __name__ == '__main__':
-main()
+    main()
