@@ -1,3 +1,6 @@
 [submodule "src/kbhackathon"]
 	path = src/kbhackathon
 	url = https://github.com/drinkdhmo/kbhackathon.git
+[submodule "src/inertial_sense_ros"]
+	path = src/inertial_sense_ros
+	url = https://github.com/inertialsense/inertial_sense_ros.git
