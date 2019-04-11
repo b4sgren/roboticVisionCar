@@ -15,6 +15,7 @@ class Controller:
         self.path_sub = rospy.Subscriber('controller_commands', Controller_Commands, self.reference_callback, queue_size = 1)
         self.est_sub = rospy.Subscriber('state', State, self.state_callback, queue_size = 1)
         self.command_pub = rospy.Publisher('command', Command, queue_size = 1)
+        self.encoder_sub = rospy.Subscriber('encoder', Encoder, self.encoder_callback, queue_size=1)
 
         #Variables for the linear velocity
         self.Kp_v = 0.5
@@ -57,6 +58,9 @@ class Controller:
         print 'Message received'
         self.v_ref = msg.u_c
         self.psi_ref = msg.psi_c #heading angle
+
+    def encoder_callback(self, msg):
+        debug = 1
 
     def run(self):
         while not rospy.is_shutdown():
