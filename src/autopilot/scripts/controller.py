@@ -120,7 +120,7 @@ class Controller:
     	u_unsat = self.Kp_v * error - self.Kd_v * self.v_dot + self.Ki_v * self.integrator_v
 
     	u = u_unsat
-        print(u)
+        print('Throttle Command', u)
 
     	if u > self.u_sat_v or u < -self.u_sat_v:
     	    self.v_command = self.u_sat_v * np.sign(u)
