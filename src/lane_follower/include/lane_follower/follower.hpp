@@ -16,7 +16,7 @@ public:
   ~Follower();
 
 protected:
-  void imgCallback(const sensor_msgs::ImageConstPtr &msg);
+  void imgCallback(const sensor_msgs::ImagePtr &msg);
   cv::Point2f calcMoment(const cv::Mat &img);
 
 private:

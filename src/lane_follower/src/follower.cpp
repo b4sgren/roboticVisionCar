@@ -38,7 +38,7 @@ Follower::Follower():
 
 Follower::~Follower(){}
 
-void Follower::imgCallback(const sensor_msgs::ImageConstPtr &msg) 
+void Follower::imgCallback(const sensor_msgs::ImagePtr &msg) 
 {
   cv_bridge::CvImagePtr cv_ptr;
   try
@@ -69,9 +69,9 @@ void Follower::imgCallback(const sensor_msgs::ImageConstPtr &msg)
   cv::Point2f center = calcMoment(cropped_img);
   center.x += roi_.x;
   center.y += roi_.y;
-  ROS_INFO("Center x: %d, Center y: %d", center.x, center.y);
+  ROS_INFO("Center x: %f, Center y: %f", center.x, center.y);
   double psi = atan2(center.x - x0, y0 - center.y);
-  ROS_INFO("Angle: %d", psi * 180/3.14159265);
+  ROS_INFO("Angle: %f", psi * 180/3.14159265);
 
 #ifdef TESTING
   cv::imshow("Window", bw_img);
