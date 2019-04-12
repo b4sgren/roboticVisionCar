@@ -45,7 +45,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv_bridge::CvImagePtr cv_ptr;
   try
   {
-      cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+      cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::mono8);
   }
   catch (cv_bridge::Exception& e)
   {
