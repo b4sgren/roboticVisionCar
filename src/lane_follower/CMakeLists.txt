@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   message_generation
   autopilot
+  cv_bridge
 )
 find_package(OpenCV REQUIRED)
 #find_package(Eigen3 REQUIRED)
