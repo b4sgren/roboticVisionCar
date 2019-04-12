@@ -55,7 +55,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
   cv::Mat img, hsv, bw_img, cropped_img; 
   cv_ptr->image.copyTo(img);
-  img.convertTo(img, cv::CV_8U);
+  img.convertTo(img, CV_8U);
   ROS_INFO("[laneFollower] image type: %d", img.type());
   if (img.empty())
   {
