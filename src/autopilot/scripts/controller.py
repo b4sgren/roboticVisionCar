@@ -108,8 +108,8 @@ class Controller:
     	elif error < - self.e_sat_v:
     	    error = - self.e_sat_v
 
-    	if v<0.1 and v>-.1:
-    	    self.integrator_v = 0
+    	# if v<0.1 and v>-.1:
+    	#     self.integrator_v = 0
 
         self.integrator_v = self.integrator_v + dt / 2.0 * (error - self.prev_error_v)
 	    #print self.integrator_v
