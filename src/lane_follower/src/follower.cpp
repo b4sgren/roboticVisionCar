@@ -32,7 +32,7 @@ Follower::Follower():
   roi_.height = 4;
 
   uint32_t queue_size{5};
-  img_sub_ = nh_.subscribe("camera/color/image_rect_color",queue_size,
+  img_sub_ = nh_.subscribe("camera/color/image_raw",queue_size,
                            &Follower::imgCallback, this);
   cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("command",queue_size);
   test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
