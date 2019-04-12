@@ -2,7 +2,8 @@
 #include <cmath>
 #include <cv_bridge/cv_bridge.h>
 
-#define TESTING
+//#define TESTING
+#define PRINT
 
 #ifdef TESTING
 int mouse_X, mouse_Y;
@@ -26,14 +27,15 @@ Follower::Follower():
   vel_cmd_(0.5)
 {
   roi_.x = 0;
-  roi_.y = 600;
-  roi_.width = 1280;
+  roi_.y = 320;
+  roi_.width = 640;
   roi_.height = 4;
 
   uint32_t queue_size{5};
   img_sub_ = nh_.subscribe("camera/color/image_rect_color",queue_size,
                            &Follower::imgCallback, this);
   cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("command",queue_size);
+  test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
 }
 
 Follower::~Follower(){}
@@ -66,6 +68,16 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv::inRange(hsv, cv::Scalar(80, 0, 0), cv::Scalar(115, 255, 255), bw_img); 
 
   cropped_img = bw_img(roi_);
+
+#ifdef PRINT
+  cv_bridge::CvImage out_img;
+  out_img.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+  out_img.image = cropped_img;
+
+  test_pub_.publish(out_img.toImageMsg());
+#endif
+  
+
   cv::Point2f center = calcMoment(cropped_img);
   center.x += roi_.x;
   center.y += roi_.y;
