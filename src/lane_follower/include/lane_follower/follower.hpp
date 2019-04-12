@@ -4,7 +4,7 @@
 #include <ros/ros.h>
 #include <opencv2/opencv.hpp>
 #include <sensor_msgs/Image.h>
-#include "autopilot/Controller_Commands.h"
+#include <autopilot/Controller_Commands.h>
 
 namespace lane
 {
@@ -25,6 +25,9 @@ private:
 
   ros::Subscriber img_sub_;
   ros::Publisher cmd_pub_;
+
+  autopilot::Controller_Commands cmd_msg_;
+  double vel_cmd_;
 
   cv::Rect roi;
   double h_min, h_max;
