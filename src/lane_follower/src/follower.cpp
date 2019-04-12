@@ -81,7 +81,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   crop_out_img.image = cropped_img;
 
   test_pub_.publish(out_img.toImageMsg());
-  crop_test_pub_.publish(crop_out_img.toImageMsg())
+  crop_test_pub_.publish(crop_out_img.toImageMsg());
 #endif
 
   cv::Point2f center = calcMoment(cropped_img);
