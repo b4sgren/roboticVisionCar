@@ -121,6 +121,7 @@ class Controller:
 
     	u = u_unsat
         print('Throttle Command', u)
+        print('Velocity', self.current_v)
 
     	if u > self.u_sat_v or u < -self.u_sat_v:
     	    self.v_command = self.u_sat_v * np.sign(u)
