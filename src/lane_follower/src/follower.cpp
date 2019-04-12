@@ -36,6 +36,7 @@ Follower::Follower():
                            &Follower::imgCallback, this);
   cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("command",queue_size);
   test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
+  crop_test_pub_ = nh_.advertise<sensor_msgs::Image>("crop_test_img",queue_size);
 }
 
 Follower::~Follower(){}
@@ -73,12 +74,14 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cropped_img = bw_img(roi_);
 
 #ifdef PRINT
-  cv_bridge::CvImage out_img;
+  cv_bridge::CvImage out_img, crop_out_img;
   out_img.encoding = sensor_msgs::image_encodings::MONO8;
   out_img.image = bw_img;
-//  out_img.image = cropped_img;
+  crop_out_img.encoding = sensor_msgs::image_encodings::MONO8;
+  crop_out_img.image = cropped_img;
 
   test_pub_.publish(out_img.toImageMsg());
+  crop_test_pub_.publish(crop_out_img.toImageMsg())
 #endif
 
   cv::Point2f center = calcMoment(cropped_img);

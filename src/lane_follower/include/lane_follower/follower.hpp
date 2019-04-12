@@ -26,6 +26,7 @@ private:
   ros::Subscriber img_sub_;
   ros::Publisher cmd_pub_;
   ros::Publisher test_pub_;
+  ros::Publisher crop_test_pub_;
 
   autopilot::Controller_Commands cmd_msg_;
   double vel_cmd_;
