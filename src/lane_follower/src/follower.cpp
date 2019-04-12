@@ -22,7 +22,7 @@ namespace lane
 
 Follower::Follower(): 
   nh_(ros::NodeHandle()),
-  nh_p("~"),
+  nh_p_("~"),
   vel_cmd_(0.5)
 {
   roi_.x = 0;
@@ -59,15 +59,17 @@ void Follower::imgCallback(const sensor_msgs::ImageConstPtr &msg)
       return;
   }
 
+  double x0{img.cols/2.0}, y0{double(img.rows)};
+
   cv::cvtColor(img, hsv, cv::COLOR_BGR2HSV);
   //Captures the table legs
   cv::inRange(hsv, cv::Scalar(80, 0, 0), cv::Scalar(115, 255, 255), bw_img); 
 
-  cropped_img = bw_img(roi);
+  cropped_img = bw_img(roi_);
   cv::Point2f center = calcMoment(cropped_img);
-  center.x += roi.x;
-  center.y += roi.y;
-  ROS_INFO("Center x: %d, Center y: %d", center.x, center,y);
+  center.x += roi_.x;
+  center.y += roi_.y;
+  ROS_INFO("Center x: %d, Center y: %d", center.x, center.y);
   double psi = atan2(center.x - x0, y0 - center.y);
   ROS_INFO("Angle: %d", psi * 180/3.14159265);
 

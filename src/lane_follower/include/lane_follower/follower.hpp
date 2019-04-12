@@ -29,10 +29,10 @@ private:
   autopilot::Controller_Commands cmd_msg_;
   double vel_cmd_;
 
-  cv::Rect roi;
-  double h_min, h_max;
-  double s_min, s_max;
-  double v_min, v_max;
+  cv::Rect roi_;
+  double h_min_, h_max_;
+  double s_min_, s_max_;
+  double v_min_, v_max_;
 };
 
 } // end namespace lane
