@@ -120,7 +120,6 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cmd_msg_.u_c = vel_cmd_;
   cmd_msg_.psi_c = psi;
 
-  ROS_INFO("[lane_follower] publishing cmd msg.");
   cmd_pub_.publish(cmd_msg_);
 #endif
 }
