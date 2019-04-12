@@ -102,11 +102,12 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   out_img.image = bw_img;
   crop_out_img.encoding = sensor_msgs::image_encodings::MONO8;
   crop_out_img.image = cropped_img_l;
-  crop_out_img.encoding = sensor_msgs::image_encodings::BGR8;
+  color_out_img.encoding = sensor_msgs::image_encodings::BGR8;
   color_out_img.image = print_img;
 
   test_pub_.publish(out_img.toImageMsg());
   crop_test_pub_.publish(crop_out_img.toImageMsg());
+  color_test_pub_.publish(color_out_img.toImageMsg());
 #endif
 
 #ifdef TESTING
