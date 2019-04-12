@@ -97,7 +97,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   ROS_INFO("Angle: %f", psi * 180/3.14159265);
 
 #ifdef PRINT
-  cv::circle(print_img, cv::Point{x_avg,y_avg}, 3, cv::Scalar{0,0,255});
+  cv::circle(print_img, cv::Point{x_avg,y_avg}, 5, cv::Scalar{0,0,255}, -1);
 
   cv_bridge::CvImage out_img, crop_out_img, color_out_img;
   out_img.encoding = sensor_msgs::image_encodings::MONO8;
