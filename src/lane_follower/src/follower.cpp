@@ -45,7 +45,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv_bridge::CvImagePtr cv_ptr;
   try
   {
-      cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
+      cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
   }
   catch (cv_bridge::Exception& e)
   {
@@ -55,8 +55,8 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
   cv::Mat img, hsv, bw_img, cropped_img; 
   cv_ptr->image.copyTo(img);
-  img.convertTo(img, CV_8U);
   ROS_INFO("[laneFollower] image type: %d", img.type());
+  img.convertTo(img, CV_8U);
   if (img.empty())
   {
       ROS_WARN("[laneFollower] received empty img.");
@@ -73,7 +73,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
 #ifdef PRINT
   cv_bridge::CvImage out_img;
-  out_img.encoding = sensor_msgs::image_encodings::BGR8;
+  out_img.encoding = sensor_msgs::image_encodings::MONO8;
   out_img.image = cropped_img;
 
   test_pub_.publish(out_img.toImageMsg());
