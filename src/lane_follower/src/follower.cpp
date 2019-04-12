@@ -66,7 +66,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
   cv::cvtColor(img, hsv, cv::COLOR_BGR2HSV);
   //Captures the table legs
-  cv::inRange(hsv, cv::Scalar(90, 0, 0), cv::Scalar(100, 255, 255), bw_img); 
+  cv::inRange(hsv, cv::Scalar(92, 0, 0), cv::Scalar(96, 255, 255), bw_img); 
 
   cropped_img = bw_img(roi_);
 
