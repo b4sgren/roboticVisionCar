@@ -26,16 +26,22 @@ Follower::Follower():
   nh_p_("~"),
   vel_cmd_(0.5)
 {
-  roi_.x = 0;
-  roi_.y = 320;
-  roi_.width = 640;
-  roi_.height = 4;
+  roi_l_.x = 0;
+  roi_l_.y = 320;
+  roi_l_.width = 320;
+  roi_l_.height = 4;
+
+  roi_r_.x = 320;
+  roi_r_.y = 320;
+  roi_r_.width = 320;
+  roi_r_.height = 4;
 
   uint32_t queue_size{5};
   img_sub_ = nh_.subscribe("camera/color/image_raw",queue_size,
                            &Follower::imgCallback, this);
   cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("command",queue_size);
   test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
+  color_test_pub_ = nh_.advertise<sensor_msgs::Image>("color_test_img",queue_size);
   crop_test_pub_ = nh_.advertise<sensor_msgs::Image>("crop_test_img",queue_size);
 }
 
@@ -54,8 +60,9 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
       return;
   }
 
-  cv::Mat img, hsv, bw_img, cropped_img; 
+  cv::Mat img, hsv, bw_img, cropped_img_l, cropped_img_r, print_img; 
   cv_ptr->image.copyTo(img);
+  img.copyTo(print_img);
   img.convertTo(img, CV_8U);
   if (img.empty())
   {
@@ -71,25 +78,36 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv::Mat element{cv::getStructuringElement(cv::MORPH_RECT, cv::Size{7,7})};
   cv::erode(bw_img, bw_img, element);
 
-  cropped_img = bw_img(roi_);
+  cropped_img_l = bw_img(roi_l_);
+  cropped_img_r = bw_img(roi_r_);
+
+  cv::Point2f center_l = calcMoment(cropped_img_l);
+  cv::Point2f center_r = calcMoment(cropped_img_r);
+  center_l.x += roi_l_.x;
+  center_l.y += roi_l_.y;
+  center_r.x += roi_r_.x;
+  center_r.y += roi_r_.y;
+  double x_avg, y_avg;
+  x_avg = (center_l.x + center_r.x) / 2.0;
+  y_avg = (center_l.y + center_r.y) / 2.0;
+  ROS_INFO("Center x: %f, Center y: %f", center.x, center.y);
+  double psi = atan2(x_avg - x0, y0 - y_avg);
+  ROS_INFO("Angle: %f", psi * 180/3.14159265);
 
 #ifdef PRINT
-  cv_bridge::CvImage out_img, crop_out_img;
+  cv::circle(print_img, cv::Point{x_avg,y_avg}, 3, cv::Scalar{0,0,255});
+
+  cv_bridge::CvImage out_img, crop_out_img, color_out_img;
   out_img.encoding = sensor_msgs::image_encodings::MONO8;
   out_img.image = bw_img;
   crop_out_img.encoding = sensor_msgs::image_encodings::MONO8;
-  crop_out_img.image = cropped_img;
+  crop_out_img.image = cropped_img_l;
+  crop_out_img.encoding = sensor_msgs::image_encodings::BGR8;
+  color_out_img.image = print_img;
 
   test_pub_.publish(out_img.toImageMsg());
   crop_test_pub_.publish(crop_out_img.toImageMsg());
 #endif
-
-  cv::Point2f center = calcMoment(cropped_img);
-  center.x += roi_.x;
-  center.y += roi_.y;
-  ROS_INFO("Center x: %f, Center y: %f", center.x, center.y);
-  double psi = atan2(center.x - x0, y0 - center.y);
-  ROS_INFO("Angle: %f", psi * 180/3.14159265);
 
 #ifdef TESTING
   cv::imshow("Window", bw_img);

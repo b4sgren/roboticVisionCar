@@ -26,15 +26,16 @@ private:
   ros::Subscriber img_sub_;
   ros::Publisher cmd_pub_;
   ros::Publisher test_pub_;
+  ros::Publisher color_test_pub_;
   ros::Publisher crop_test_pub_;
 
   autopilot::Controller_Commands cmd_msg_;
   double vel_cmd_;
 
-  cv::Rect roi_;
-  double h_min_, h_max_;
-  double s_min_, s_max_;
-  double v_min_, v_max_;
+  cv::Rect roi_l_, roi_r_;
+//  double h_min_, h_max_;
+//  double s_min_, s_max_;
+//  double v_min_, v_max_;
 };
 
 } // end namespace lane
