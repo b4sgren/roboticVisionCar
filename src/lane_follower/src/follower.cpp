@@ -90,7 +90,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   double x_avg, y_avg;
   x_avg = (center_l.x + center_r.x) / 2.0;
   y_avg = (center_l.y + center_r.y) / 2.0;
-  ROS_INFO("Center x: %f, Center y: %f", center.x, center.y);
+  ROS_INFO("Center x: %f, Center y: %f", x_avg, y_avg);
   double psi = atan2(x_avg - x0, y0 - y_avg);
   ROS_INFO("Angle: %f", psi * 180/3.14159265);
 
