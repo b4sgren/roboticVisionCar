@@ -74,7 +74,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 #ifdef PRINT
   cv_bridge::CvImage out_img;
   out_img.encoding = sensor_msgs::image_encodings::MONO8;
-  out_img.image = hsv;
+  out_img.image = bw_img;
 //  out_img.image = cropped_img;
 
   test_pub_.publish(out_img.toImageMsg());
