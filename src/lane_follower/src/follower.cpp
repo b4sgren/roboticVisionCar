@@ -39,7 +39,7 @@ Follower::Follower():
   uint32_t queue_size{5};
   img_sub_ = nh_.subscribe("camera/color/image_raw",queue_size,
                            &Follower::imgCallback, this);
-  cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("command",queue_size);
+  cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("controller_commands",queue_size);
   test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
   color_test_pub_ = nh_.advertise<sensor_msgs::Image>("color_test_img",queue_size);
   crop_test_pub_ = nh_.advertise<sensor_msgs::Image>("crop_test_img",queue_size);
@@ -120,6 +120,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cmd_msg_.u_c = vel_cmd_;
   cmd_msg_.psi_c = psi;
 
+  ROS_INFO("[lane_follower] publishing cmd msg.");
   cmd_pub_.publish(cmd_msg_);
 #endif
 }
