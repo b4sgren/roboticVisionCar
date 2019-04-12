@@ -83,6 +83,8 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
   cv::Point2f center_l = calcMoment(cropped_img_l);
   cv::Point2f center_r = calcMoment(cropped_img_r);
+  if (center_r.x==0.0)
+      center_r.x = 320;
   center_l.x += roi_l_.x;
   center_l.y += roi_l_.y;
   center_r.x += roi_r_.x;
