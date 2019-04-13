@@ -135,6 +135,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
 void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
 {
+  ROS_INFO("[lane_follower] entered depth callback.");
   cv_bridge::CvImagePtr cv_ptr;
   try
   {
