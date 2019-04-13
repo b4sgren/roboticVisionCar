@@ -74,7 +74,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
   cv::cvtColor(img, hsv, cv::COLOR_BGR2HSV);
   //Captures the table legs
-  cv::inRange(hsv, cv::Scalar(93, 0, 0), cv::Scalar(96, 255, 255), bw_img); 
+  cv::inRange(hsv, cv::Scalar(91, 0, 0), cv::Scalar(98, 255, 255), bw_img); 
   cv::Mat element{cv::getStructuringElement(cv::MORPH_RECT, cv::Size{7,7})};
   cv::erode(bw_img, bw_img, element);
 
