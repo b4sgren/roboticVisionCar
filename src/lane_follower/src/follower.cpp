@@ -111,7 +111,6 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   color_out_img.image = print_img;
 
   test_pub_.publish(out_img.toImageMsg());
-  crop_test_pub_.publish(crop_out_img.toImageMsg());
   color_test_pub_.publish(color_out_img.toImageMsg());
 #endif
 
@@ -135,7 +134,6 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
 
 void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
 {
-  ROS_INFO("[lane_follower] entered depth callback.");
   cv_bridge::CvImagePtr cv_ptr;
   try
   {
@@ -154,6 +152,12 @@ void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
   roi.width = depth.cols;
   roi.height = depth.rows/2;
   cv::inRange(depth, 0, 300, bin_d); 
+
+  cv_bridge::CvImage bin_out_img;
+  bin_out_img.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+  bin_out_img.image = bin_d;
+
+  crop_test_pub_.publish(bin_out_img.toImageMsg());
 
   cv::Point2f center = calcMoment(bin_d(roi));
 
