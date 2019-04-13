@@ -25,7 +25,7 @@ Follower::Follower():
   nh_(ros::NodeHandle()),
   nh_p_("~"),
   vel_cmd_(1.0),
-  safe_to_drive_{false}
+  safe_to_drive_{true}
 {
   roi_l_.x = 0;
   roi_l_.y = 476;
@@ -121,7 +121,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv::setMouseCallback("Color", on_mouse);
   cv::waitKey(0);
 #else
-  ROS_INFO("[lane_follower] safe to drive: %s", safe_to_drive_ ? "true" : "false");
+//  ROS_INFO("[lane_follower] safe to drive: %s", safe_to_drive_ ? "true" : "false");
   if (safe_to_drive_)
     cmd_msg_.u_c = vel_cmd_;
   else
