@@ -120,7 +120,7 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv::waitKey(0);
 #else
   cmd_msg_.u_c = vel_cmd_;
-  cmd_msg_.psi_c = psi;
+  cmd_msg_.psi_c = -psi;
 
   cmd_pub_.publish(cmd_msg_);
 #endif
