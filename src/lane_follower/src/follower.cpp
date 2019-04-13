@@ -154,7 +154,7 @@ void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
   cv::inRange(depth, 0, 300, bin_d); 
 
   cv_bridge::CvImage bin_out_img;
-  bin_out_img.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+  bin_out_img.encoding = sensor_msgs::image_encodings::MONO8;
   bin_out_img.image = bin_d;
 
   crop_test_pub_.publish(bin_out_img.toImageMsg());
