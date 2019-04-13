@@ -24,7 +24,7 @@ namespace lane
 Follower::Follower(): 
   nh_(ros::NodeHandle()),
   nh_p_("~"),
-  vel_cmd_(0.5)
+  vel_cmd_(1.0)
 {
   roi_l_.x = 0;
   roi_l_.y = 476;
