@@ -27,12 +27,12 @@ Follower::Follower():
   vel_cmd_(0.5)
 {
   roi_l_.x = 0;
-  roi_l_.y = 320;
+  roi_l_.y = 476;
   roi_l_.width = 320;
   roi_l_.height = 4;
 
   roi_r_.x = 320;
-  roi_r_.y = 320;
+  roi_r_.y = 476;
   roi_r_.width = 320;
   roi_r_.height = 4;
 
