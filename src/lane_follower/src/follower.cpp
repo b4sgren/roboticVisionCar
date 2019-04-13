@@ -151,7 +151,7 @@ void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
   roi.x = 0;
   roi.y = 0;
   roi.width = depth.cols;
-  roi.height = depth.rows/2;:w
+  roi.height = depth.rows/2;
   cv::inRange(depth, 0, 300, bin_d); 
 
   cv::Point2f center = calcMoment(bin_d(roi));
