@@ -24,7 +24,8 @@ namespace lane
 Follower::Follower(): 
   nh_(ros::NodeHandle()),
   nh_p_("~"),
-  vel_cmd_(1.0)
+  vel_cmd_(1.0),
+  safe_to_drive_{false}
 {
   roi_l_.x = 0;
   roi_l_.y = 476;
@@ -39,6 +40,8 @@ Follower::Follower():
   uint32_t queue_size{5};
   img_sub_ = nh_.subscribe("camera/color/image_raw",queue_size,
                            &Follower::imgCallback, this);
+  depth_sub_ = nh_.subscribe("camera/aligned_depth_to_color/image_raw",queue_size,
+                           &Follower::depthCallback, this);
   cmd_pub_ = nh_.advertise<autopilot::Controller_Commands>("controller_commands",queue_size);
   test_pub_ = nh_.advertise<sensor_msgs::Image>("test_img",queue_size);
   color_test_pub_ = nh_.advertise<sensor_msgs::Image>("color_test_img",queue_size);
@@ -119,11 +122,44 @@ void Follower::imgCallback(const sensor_msgs::ImagePtr &msg)
   cv::setMouseCallback("Color", on_mouse);
   cv::waitKey(0);
 #else
-  cmd_msg_.u_c = vel_cmd_;
+  ROS_INFO("[lane_follower] safe to drive: %s", safe_to_drive_ ? "true" : "false");
+  if (safe_to_drive_)
+    cmd_msg_.u_c = vel_cmd_;
+  else
+    cmd_msg_.u_c = 0.0;
   cmd_msg_.psi_c = -psi;
 
   cmd_pub_.publish(cmd_msg_);
 #endif
+}
+
+void Follower::depthCallback(const sensor_msgs::ImagePtr &msg)
+{
+  cv_bridge::CvImagePtr cv_ptr;
+  try
+  {
+      cv_ptr = cv_bridge::toCvCopy(msg);
+  }
+  catch (cv_bridge::Exception& e)
+  {
+      ROS_ERROR("[laneFollower] cv_bridge exception: %s", e.what());
+      return;
+  }
+  cv::Mat depth, bin_d;
+  cv_ptr->image.copyTo(depth);
+  cv::Rect roi;
+  roi.x = 0;
+  roi.y = 0;
+  roi.width = depth.cols;
+  roi.height = depth.rows/2;:w
+  cv::inRange(depth, 0, 300, bin_d); 
+
+  cv::Point2f center = calcMoment(bin_d(roi));
+
+  if (center.x == 0.0 && center.y == 0.0)
+    safe_to_drive_ = true;
+  else
+    safe_to_drive_ = false;
 }
 
 cv::Point2f Follower::calcMoment(const cv::Mat &img)

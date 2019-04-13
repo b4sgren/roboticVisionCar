@@ -17,6 +17,7 @@ public:
 
 protected:
   void imgCallback(const sensor_msgs::ImagePtr &msg);
+  void depthCallback(const sensor_msgs::ImagePtr &msg);
   cv::Point2f calcMoment(const cv::Mat &img);
 
 private:
@@ -24,6 +25,7 @@ private:
   ros::NodeHandle nh_p_;
 
   ros::Subscriber img_sub_;
+  ros::Subscriber depth_sub_;
   ros::Publisher cmd_pub_;
   ros::Publisher test_pub_;
   ros::Publisher color_test_pub_;
@@ -33,9 +35,7 @@ private:
   double vel_cmd_;
 
   cv::Rect roi_l_, roi_r_;
-//  double h_min_, h_max_;
-//  double s_min_, s_max_;
-//  double v_min_, v_max_;
+  bool safe_to_drive_;
 };
 
 } // end namespace lane
